@@ -4,13 +4,21 @@
   "description": "name: (lab1) node-lab1",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node -r @babel/register index.js",
+    "dev": "nodemon --exec npm start"
   },
   "author": "warrenstone8",
   "license": "ISC",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^0.0.0",
+    "@babel/cli": "^7.26.4",
+    "@babel/core": "^7.26.10",
+    "@babel/node": "^7.26.0",
+    "@babel/preset-env": "^7.26.9",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^9.22.0",
     "nodemon": "^3.1.9"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7"
   }
 }
