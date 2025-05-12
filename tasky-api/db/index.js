@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import './db';
+
 
 dotenv.config();
 
