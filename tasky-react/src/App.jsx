@@ -1,11 +1,13 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom"; // Fixed import from react-router to react-router-dom
+import { BrowserRouter, Route, Routes, Navigate } from "react-router";
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import LoginPage from "../pages/loginPage";  // This is correct if pages/ is at root level
+import LoginPage from "../pages/loginPage";
 import SignupPage from "../pages/signupPage";
 import TasksPage from "../pages/tasksPage";
 import StartPage from "../pages/startPage";
 import ProfilePage from "../pages/profilePage";
+import AuthContextProvider from "../src/contexts/authContext";
+import ProtectedRoutes from "./protectedRoutes";
 import './App.css';
 
 const queryClient = new QueryClient({
@@ -22,18 +24,23 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div className="container">
-          <h1>Tasky</h1>
-          <Routes>
-            <Route path="/" element={<StartPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/tasks" element={<TasksPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </div>
+        <AuthContextProvider>
+          <div className="container">
+            <h1>Tasky</h1>
+            <Routes>
+              <Route path="/" element={< StartPage />} />
+              <Route path="/login" element={< LoginPage />} />
+              <Route path="/signup" element={< SignupPage />} />
+              <Route path="/profile" element={< ProfilePage />} />
+              <Route element={<ProtectedRoutes />}>
+                <Route path="/tasks" element={< TasksPage />} />
+              </Route>
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </div>
+          </AuthContextProvider>
       </BrowserRouter>
+      
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
