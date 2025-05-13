@@ -1,13 +1,14 @@
 export const getTasks = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/tasks");
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-      return await response.json();
-    } catch (error) {
-      console.error("Failed to fetch tasks:", error);
-      return []; // Return an empty array to avoid crashes
-    }
-  };
+    const response = await fetch(
+        `http://localhost:8080/api/tasks`, {
+            headers: {
+                'Authorization': window.localStorage.getItem('token')
+            }
+        }
+    )
+    return response.json();
+};
+
 export const addTask = async(data) => {
     const res = await fetch(
         `http://localhost:8080/api/tasks`,
@@ -15,6 +16,7 @@ export const addTask = async(data) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': window.localStorage.getItem('token')
             },
             body: JSON.stringify(data)
         }
@@ -22,15 +24,20 @@ export const addTask = async(data) => {
         return res.json();
 };
 
+
 export const deleteTask = async (id) => {
     const res =  fetch(
         `http://localhost:8080/api/tasks/${id}`,
         {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': window.localStorage.getItem('token')
+            }
         }
     )
     return res;
 };
+
 
 export const updateTask = async (data) => {
     const res = await fetch(
@@ -39,12 +46,14 @@ export const updateTask = async (data) => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': window.localStorage.getItem('token')
             },
             body: JSON.stringify(data)
         }
     )
         return res.json();
 };
+
 export const login = async (username, password) => {
     const response = await fetch('http://localhost:8080/api/users', {
         headers: {
